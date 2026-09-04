@@ -18,11 +18,36 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Find project
+        shell: pwsh
+        run: |
+          Get-ChildItem -Path $env:GITHUB_WORKSPACE -Recurse -Filter "*.csproj"
+
       - name: Restore
-        run: dotnet restore RowSenseWindows.csproj
+        shell: pwsh
+        run: |
+          $proj = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Recurse -Filter "RowSenseWindows.csproj" | Select-Object -First 1
+          if (-not $proj) {
+            throw "RowSenseWindows.csproj not found"
+          }
+          Write-Host "Project found: $($proj.FullName)"
+          dotnet restore "$($proj.FullName)"
 
       - name: Publish Windows x64
-        run: dotnet publish RowSenseWindows.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -p:DebugType=None -p:DebugSymbols=false -o publish
+        shell: pwsh
+        run: |
+          $proj = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Recurse -Filter "RowSenseWindows.csproj" | Select-Object -First 1
+          if (-not $proj) {
+            throw "RowSenseWindows.csproj not found"
+          }
+          dotnet publish "$($proj.FullName)" `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=false `
+            -p:DebugType=None `
+            -p:DebugSymbols=false `
+            -o "$env:GITHUB_WORKSPACE\publish"
 
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v4
