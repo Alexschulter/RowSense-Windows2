@@ -1,0 +1,81 @@
+<Window x:Class="RowSenseWindows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RowSense Windows" Height="800" Width="1280"
+        MinHeight="650" MinWidth="950" WindowStartupLocation="CenterScreen">
+    <Grid Margin="14">
+        <Grid x:Name="SetupPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="520"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="1" BorderThickness="1" BorderBrush="#D0D0D0" CornerRadius="10" Padding="22">
+                <StackPanel>
+                    <TextBlock Text="RowSense" FontSize="30" FontWeight="Bold"/>
+                    <TextBlock Text="Настройка сессии" FontSize="20" Margin="0,4,0,22"/>
+
+                    <TextBlock Text="Класс лодки"/>
+                    <ComboBox x:Name="BoatClassCombo" Margin="0,5,0,14" Height="34" SelectedIndex="0">
+                        <ComboBoxItem Content="1x"/>
+                        <ComboBoxItem Content="2x"/>
+                        <ComboBoxItem Content="2-"/>
+                        <ComboBoxItem Content="4x"/>
+                        <ComboBoxItem Content="4-"/>
+                        <ComboBoxItem Content="4+"/>
+                        <ComboBoxItem Content="8+"/>
+                    </ComboBox>
+
+                    <TextBlock Text="Внешний рычаг, см"/>
+                    <TextBox x:Name="ExternalLeverBox" Text="260" Margin="0,5,0,14" Height="34" Padding="8"/>
+
+                    <TextBlock Text="Внутренний рычаг, см"/>
+                    <TextBox x:Name="InternalLeverBox" Text="116" Margin="0,5,0,18" Height="34" Padding="8"/>
+
+                    <Separator Margin="0,2,0,14"/>
+                    <TextBlock Text="Bluetooth" FontSize="18" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="BleStatusText" Text="Не подключено" Margin="0,5,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button x:Name="ScanButton" Content="Найти RowSense ESP" Click="ScanButton_Click" Padding="12,7" Margin="0,0,8,0"/>
+                        <Button x:Name="ConnectButton" Content="Подключить" Click="ConnectButton_Click" Padding="12,7"/>
+                    </StackPanel>
+                    <ComboBox x:Name="DeviceCombo" Height="36" DisplayMemberPath="Display"/>
+
+                    <Button x:Name="ContinueButton" Content="Продолжить" Click="ContinueButton_Click"
+                            Height="44" Margin="0,22,0,0" FontSize="16" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid x:Name="LivePanel" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <DockPanel Margin="0,0,0,10">
+                <Button Content="← Настройки" Click="BackButton_Click" Padding="10,6" DockPanel.Dock="Left"/>
+                <TextBlock x:Name="SessionTitle" Text="Сессия" FontSize="22" FontWeight="Bold" Margin="14,0,0,0" VerticalAlignment="Center"/>
+                <TextBlock x:Name="LiveBleStatus" Text="BLE" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </DockPanel>
+
+            <Border Grid.Row="1" Background="#F5F5F5" CornerRadius="8" Padding="10" Margin="0,0,0,8">
+                <StackPanel x:Name="AthleteVisibilityPanel" Orientation="Horizontal"/>
+            </Border>
+
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                <Grid x:Name="AthleteGrid"/>
+            </ScrollViewer>
+
+            <DockPanel Grid.Row="3" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button x:Name="StartButton" Content="START" Click="StartButton_Click" Padding="20,9" Margin="0,0,8,0"/>
+                    <Button x:Name="FinishButton" Content="FINISH" Click="FinishButton_Click" Padding="20,9" IsEnabled="False"/>
+                </StackPanel>
+                <Button Content="Тренировки" Click="TrainingsButton_Click" Padding="14,8" DockPanel.Dock="Right"/>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>
